@@ -89,6 +89,11 @@ namespace Graff
         //on left of pair of parent brackets
         public static string Calculate(string input, Functions functionName = Functions.NONE)
         {
+            if(input == string.Empty)
+            {
+                return float.NaN.ToString("F3");
+            }
+
             List<char> operators = new List<char>();
             List<float> numbers = new List<float>();
 
@@ -251,7 +256,16 @@ namespace Graff
             {
                 if (!numStr.Equals(string.Empty))
                 {
-                    numbers.Add(float.Parse(numStr));
+                    float tempFloat;
+
+                    if (float.TryParse(numStr, out tempFloat))
+                    {
+                        numbers.Add(tempFloat);
+                    }
+                    else
+                    {
+                        return float.NaN.ToString("F3");
+                    }
                 }
             }
             //end making another List<float> parsing float from List<string> 'numbersString'

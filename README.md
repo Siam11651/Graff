@@ -1,7 +1,7 @@
 # Graff
  A simple graph sketching C# Windows Form application
 
- ![Graff](https://raw.githubusercontent.com/Siam11651/Graff/main/Screenshots/Capture01.PNG)
+ ![Graff](https://raw.githubusercontent.com/Siam11651/Graff/main/Screenshots/Capture02.PNG)
 
  Open "Graff.sln" using Visual Studio. Open project "Graff". "Ctrl+B" to build project.
 

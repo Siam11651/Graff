@@ -29,16 +29,20 @@ namespace Graff
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(form_main));
             this.canvas = new System.Windows.Forms.PictureBox();
             this.label = new System.Windows.Forms.Label();
             this.textBox_expression = new System.Windows.Forms.TextBox();
             this.button_sketch = new System.Windows.Forms.Button();
             this.button_clear = new System.Windows.Forms.Button();
             this.groupBox_transform = new System.Windows.Forms.GroupBox();
-            this.button_up = new System.Windows.Forms.Button();
-            this.button_down = new System.Windows.Forms.Button();
-            this.button_right = new System.Windows.Forms.Button();
             this.button_left = new System.Windows.Forms.Button();
+            this.button_right = new System.Windows.Forms.Button();
+            this.button_down = new System.Windows.Forms.Button();
+            this.button_up = new System.Windows.Forms.Button();
+            this.button_zoom_in = new System.Windows.Forms.Button();
+            this.button_zoom_out = new System.Windows.Forms.Button();
+            this.label_zoom_level = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.canvas)).BeginInit();
             this.groupBox_transform.SuspendLayout();
             this.SuspendLayout();
@@ -103,25 +107,15 @@ namespace Graff
             this.groupBox_transform.TabStop = false;
             this.groupBox_transform.Text = "Transform";
             // 
-            // button_up
+            // button_left
             // 
-            this.button_up.Location = new System.Drawing.Point(62, 19);
-            this.button_up.Name = "button_up";
-            this.button_up.Size = new System.Drawing.Size(75, 23);
-            this.button_up.TabIndex = 0;
-            this.button_up.Text = "Up";
-            this.button_up.UseVisualStyleBackColor = true;
-            this.button_up.Click += new System.EventHandler(this.Click_button_up);
-            // 
-            // button_down
-            // 
-            this.button_down.Location = new System.Drawing.Point(62, 71);
-            this.button_down.Name = "button_down";
-            this.button_down.Size = new System.Drawing.Size(75, 23);
-            this.button_down.TabIndex = 1;
-            this.button_down.Text = "Down";
-            this.button_down.UseVisualStyleBackColor = true;
-            this.button_down.Click += new System.EventHandler(this.Click_button_down);
+            this.button_left.Location = new System.Drawing.Point(6, 45);
+            this.button_left.Name = "button_left";
+            this.button_left.Size = new System.Drawing.Size(75, 23);
+            this.button_left.TabIndex = 3;
+            this.button_left.Text = "Left";
+            this.button_left.UseVisualStyleBackColor = true;
+            this.button_left.Click += new System.EventHandler(this.Click_button_left);
             // 
             // button_right
             // 
@@ -133,27 +127,71 @@ namespace Graff
             this.button_right.UseVisualStyleBackColor = true;
             this.button_right.Click += new System.EventHandler(this.Click_button_right);
             // 
-            // button_left
+            // button_down
             // 
-            this.button_left.Location = new System.Drawing.Point(6, 45);
-            this.button_left.Name = "button_left";
-            this.button_left.Size = new System.Drawing.Size(75, 23);
-            this.button_left.TabIndex = 3;
-            this.button_left.Text = "Left";
-            this.button_left.UseVisualStyleBackColor = true;
-            this.button_left.Click += new System.EventHandler(this.Click_button_left);
+            this.button_down.Location = new System.Drawing.Point(62, 71);
+            this.button_down.Name = "button_down";
+            this.button_down.Size = new System.Drawing.Size(75, 23);
+            this.button_down.TabIndex = 1;
+            this.button_down.Text = "Down";
+            this.button_down.UseVisualStyleBackColor = true;
+            this.button_down.Click += new System.EventHandler(this.Click_button_down);
+            // 
+            // button_up
+            // 
+            this.button_up.Location = new System.Drawing.Point(62, 19);
+            this.button_up.Name = "button_up";
+            this.button_up.Size = new System.Drawing.Size(75, 23);
+            this.button_up.TabIndex = 0;
+            this.button_up.Text = "Up";
+            this.button_up.UseVisualStyleBackColor = true;
+            this.button_up.Click += new System.EventHandler(this.Click_button_up);
+            // 
+            // button_zoom_in
+            // 
+            this.button_zoom_in.Location = new System.Drawing.Point(497, 148);
+            this.button_zoom_in.Name = "button_zoom_in";
+            this.button_zoom_in.Size = new System.Drawing.Size(75, 23);
+            this.button_zoom_in.TabIndex = 6;
+            this.button_zoom_in.Text = "Zoom In";
+            this.button_zoom_in.UseVisualStyleBackColor = true;
+            this.button_zoom_in.Click += new System.EventHandler(this.Click_button_zoom_in);
+            // 
+            // button_zoom_out
+            // 
+            this.button_zoom_out.Location = new System.Drawing.Point(497, 177);
+            this.button_zoom_out.Name = "button_zoom_out";
+            this.button_zoom_out.Size = new System.Drawing.Size(75, 23);
+            this.button_zoom_out.TabIndex = 7;
+            this.button_zoom_out.Text = "Zoom Out";
+            this.button_zoom_out.UseVisualStyleBackColor = true;
+            this.button_zoom_out.Click += new System.EventHandler(this.Click_button_zoom_out);
+            // 
+            // label_zoom_level
+            // 
+            this.label_zoom_level.AutoSize = true;
+            this.label_zoom_level.Location = new System.Drawing.Point(318, 299);
+            this.label_zoom_level.Name = "label_zoom_level";
+            this.label_zoom_level.Size = new System.Drawing.Size(33, 13);
+            this.label_zoom_level.TabIndex = 8;
+            this.label_zoom_level.Text = "1.00x";
+            this.label_zoom_level.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // form_main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 361);
+            this.Controls.Add(this.label_zoom_level);
+            this.Controls.Add(this.button_zoom_out);
+            this.Controls.Add(this.button_zoom_in);
             this.Controls.Add(this.groupBox_transform);
             this.Controls.Add(this.button_clear);
             this.Controls.Add(this.button_sketch);
             this.Controls.Add(this.textBox_expression);
             this.Controls.Add(this.label);
             this.Controls.Add(this.canvas);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "form_main";
             this.Text = "Graff";
@@ -176,6 +214,9 @@ namespace Graff
         private System.Windows.Forms.Button button_right;
         private System.Windows.Forms.Button button_down;
         private System.Windows.Forms.Button button_up;
+        private System.Windows.Forms.Button button_zoom_in;
+        private System.Windows.Forms.Button button_zoom_out;
+        private System.Windows.Forms.Label label_zoom_level;
     }
 }
 
