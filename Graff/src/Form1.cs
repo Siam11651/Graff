@@ -1,30 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace Graff
 {
-    public partial class form_main : Form
+    public partial class FormMain : Form
     {
-        const float PIXEL_TO_TRANSFORM = 10.0f;
         const float SCALE_MULTIPLIER = 2.0f;
         const float INITIAL_SCALE_LEVEL = 10.0f;
         const float TARGET_PIXEL_GAP = 50.0f;
         const float SCALE_POINT_MULTIPLIER = 2.0f;
+        const int axesCharSize = 5;
+        const int axesCharGap = 5;
         PointF origin = new PointF();
+        Point mouseDown, initialCenter, center = new Point(150, 150);
         float scale = INITIAL_SCALE_LEVEL;
         float currentUnitGap = 1.0f;
 
-        public form_main()
+        public FormMain()
         {
-            origin = new PointF();
-
             InitializeComponent();
         }
 
@@ -52,8 +48,8 @@ namespace Graff
                 new Point(canvas.Width - triangleSize, graphCenter.Y + triangleSize),
                 new Point(canvas.Width - triangleSize, graphCenter.Y - triangleSize)
             };
-            Point verStart = new Point(graphCenter.X, 0);
-            Point verEnd = new Point(graphCenter.X, canvas.Height);
+            Point verStart = new Point(graphCenter.X, 0); ; 
+            Point verEnd = new Point(graphCenter.X, canvas.Height);            
             Point[] upVerLineArrowPoints = new Point[]
             {
                 new Point(graphCenter.X, 0),
@@ -111,9 +107,27 @@ namespace Graff
 
                 graphics.DrawLine(penBlue, new Point(linePos.X, linePos.Y + 1),
                     new Point(linePos.X, linePos.Y - 1));
-                graphics.DrawString((currentUnitGap * i).ToString("F2"),
-                    new Font(FontFamily.GenericMonospace, 5.0f), brushBlue,
-                    new Point(linePos.X, linePos.Y + 5));
+
+                int stringSize = axesCharSize * 2;
+
+                if (linePos.Y > canvas.Height - stringSize - axesCharGap)
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushBlue,
+                    new Point(linePos.X, canvas.Height - stringSize));
+                }
+                else if (linePos.Y < 0)
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushBlue,
+                    new Point(linePos.X, 0));
+                }
+                else
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushBlue,
+                    new Point(linePos.X, linePos.Y + axesCharGap));
+                }
             }
 
             for(float i = -1; leftEnd.x <= i * currentUnitGap; i--)
@@ -124,9 +138,27 @@ namespace Graff
 
                 graphics.DrawLine(penBlue, new Point(linePos.X, linePos.Y + 1),
                     new Point(linePos.X, linePos.Y - 1));
-                graphics.DrawString((currentUnitGap * i).ToString("F2"),
-                    new Font(FontFamily.GenericMonospace, 5.0f), brushBlue,
-                    new Point(linePos.X, linePos.Y + 5));
+
+                int stringSize = axesCharSize * 2;
+
+                if (linePos.Y > canvas.Height - stringSize - axesCharGap)
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushBlue,
+                    new Point(linePos.X, canvas.Height - stringSize));
+                }
+                else if (linePos.Y < 0)
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushBlue,
+                    new Point(linePos.X, 0));
+                }
+                else
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushBlue,
+                    new Point(linePos.X, linePos.Y + axesCharGap));
+                }
             }
 
             PointF upEnd = PointF.ScreenToGraph(new PointF(canvas.Width / 2, 0),
@@ -142,9 +174,27 @@ namespace Graff
 
                 graphics.DrawLine(penRed, new Point(linePos.X + 1, linePos.Y),
                     new Point(linePos.X - 1, linePos.Y));
-                graphics.DrawString((currentUnitGap * i).ToString("F2"),
-                    new Font(FontFamily.GenericMonospace, 5.0f), brushRed,
-                    new Point(linePos.X + 5, linePos.Y));
+
+                int stringSize = (currentUnitGap * i).ToString("F2").Length * axesCharSize;
+
+                if (linePos.X > canvas.Width - stringSize - axesCharGap)
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushRed,
+                    new Point(canvas.Width - stringSize, linePos.Y));
+                }
+                else if(linePos.X < 0)
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushRed,
+                    new Point(0, linePos.Y));
+                }
+                else
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushRed,
+                    new Point(linePos.X + axesCharGap, linePos.Y));
+                }
             }
 
             for (float i = -1; downEnd.y <= i * currentUnitGap; i--)
@@ -155,9 +205,27 @@ namespace Graff
 
                 graphics.DrawLine(penRed, new Point(linePos.X + 1, linePos.Y),
                     new Point(linePos.X - 1, linePos.Y));
-                graphics.DrawString((currentUnitGap * i).ToString("F2"),
-                    new Font(FontFamily.GenericMonospace, 5.0f), brushRed,
-                    new Point(linePos.X + 5, linePos.Y));
+
+                int stringSize = (currentUnitGap * i).ToString("F2").Length * axesCharSize;
+
+                if (linePos.X > canvas.Width - stringSize - axesCharGap)
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushRed,
+                    new Point(canvas.Width - stringSize, linePos.Y));
+                }
+                else if (linePos.X < 0)
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushRed,
+                    new Point(0, linePos.Y));
+                }
+                else
+                {
+                    graphics.DrawString((currentUnitGap * i).ToString("F2"),
+                    new Font(FontFamily.GenericMonospace, axesCharSize), brushRed,
+                    new Point(linePos.X + axesCharGap, linePos.Y));
+                }
             }
         }
 
@@ -170,14 +238,15 @@ namespace Graff
             for (int i = 0; i < canvas.Width; i++)
             {
                 string expression = textBox_expression.Text;
-                PointF pointf = PointF.ScreenToGraph(new PointF(i, canvas.Width / 2), origin, 10.0f, canvas.Width);
+                PointF pointf = PointF.ScreenToGraph(new PointF(i, canvas.Width / 2), origin, scale, canvas.Width);
 
                 Calculations.FormatStringX(pointf.x, ref expression);
 
-                float yVal;
-                string result = Calculations.Calculate(expression, Calculations.Functions.NONE);
+                string result = Calculations.Calculate(expression);
 
-                if (float.TryParse(result, out yVal))
+                Console.WriteLine(expression + " = " + result);
+
+                if (float.TryParse(result, out float yVal))
                 {
                     pointf.Set(pointf.x, yVal);
 
@@ -212,49 +281,58 @@ namespace Graff
 
         private void Click_button_clear(object sender, EventArgs e)
         {
-            ResetCanvas(canvas.CreateGraphics(), new PointF());
+            label_zoom_level.Text = (scale / INITIAL_SCALE_LEVEL).ToString("F2") + "x";
+
+            ResetCanvas(canvas.CreateGraphics(), origin);
         }
 
-        private void Click_button_right(object sender, EventArgs e)
+        private void Click_button_reset(object sender, EventArgs e)
         {
-            origin.Set(origin.x + PIXEL_TO_TRANSFORM / scale, origin.y);
+            scale = 10.0f;
+            origin = new PointF(0, 0);
+            label_zoom_level.Text = (scale / INITIAL_SCALE_LEVEL).ToString("F2") + "x";
+
             DrawGraph(canvas.CreateGraphics());
         }
 
-        private void Click_button_left(object sender, EventArgs e)
+        private void MouseDown_canvas(object sender, MouseEventArgs e)
         {
-            origin.Set(origin.x - PIXEL_TO_TRANSFORM / scale, origin.y);
-            DrawGraph(canvas.CreateGraphics());
-        }
-
-        private void Click_button_up(object sender, EventArgs e)
-        {
-            origin.Set(origin.x, origin.y + PIXEL_TO_TRANSFORM / scale);
-            DrawGraph(canvas.CreateGraphics());
-        }
-
-        private void Click_button_down(object sender, EventArgs e)
-        {
-            origin.Set(origin.x, origin.y - PIXEL_TO_TRANSFORM / scale);
-            DrawGraph(canvas.CreateGraphics());
-        }
-
-        private void Click_button_zoom_in(object sender, EventArgs e)
-        {
-            if(scale <= 20.0f)
+            if (e.Button == MouseButtons.Left)
             {
-                scale *= SCALE_MULTIPLIER;
-                label_zoom_level.Text = (scale / INITIAL_SCALE_LEVEL).ToString("F2") + "x";
+                center = PointF.GraphToScreen(origin, new PointF(),
+                    scale, canvas.Width).ConvertToPoint();
+                initialCenter = center;
+                mouseDown = e.Location;
+            }
+        }
+
+        private void MouseMove_canvas(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                center = new Point(mouseDown.X - e.Location.X + initialCenter.X,
+                    mouseDown.Y - e.Location.Y + initialCenter.Y);
+                origin = PointF.ScreenToGraph(new PointF(center.X, center.Y),
+                    new PointF(), scale, canvas.Width);
+
                 DrawGraph(canvas.CreateGraphics());
             }
         }
 
-        private void Click_button_zoom_out(object sender, EventArgs e)
+        private void MouseWheel_canvas(object sender, MouseEventArgs e)
         {
-            if (scale >= 5.0f)
+            if (e.Delta > 0 && scale * 2.0 < 5000)
+            {
+                scale *= SCALE_MULTIPLIER;
+                label_zoom_level.Text = (scale / INITIAL_SCALE_LEVEL).ToString("F2") + "x";
+
+                DrawGraph(canvas.CreateGraphics());
+            }
+            else if (e.Delta < 0 && scale / 2.0 > 0.1)
             {
                 scale /= SCALE_MULTIPLIER;
                 label_zoom_level.Text = (scale / INITIAL_SCALE_LEVEL).ToString("F2") + "x";
+
                 DrawGraph(canvas.CreateGraphics());
             }
         }

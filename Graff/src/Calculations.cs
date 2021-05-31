@@ -15,7 +15,7 @@ namespace Graff
                 if(input[i] == 'x')
                 {
                     string suf = input.Substring(0, i);
-                    string mid = number.ToString("F3");
+                    string mid = "(" + number.ToString("F3") + ")";
                     string pref = (i + 1 < input.Length) ? input.Substring(i + 1) : "";
                     input = suf + mid + pref;
                     i += mid.Length - 1;
@@ -78,21 +78,30 @@ namespace Graff
         }
         //end function to calculate nPr
 
-        //provide parent function name in 'Calculate"
-        //function as parameter as a member of enum here
-        public enum Functions { NONE, SIN, COS, TAN, ASIN, ACOS, ATAN, LOG, LN, DEG, RAD };
-
         //main solving function
         //it solves the children brackets first
         //solves recursively
         //'functionName' argument takes name of function (within the enum)
         //on left of pair of parent brackets
-        public static string Calculate(string input, Functions functionName = Functions.NONE)
+        public static string Calculate(string input)
         {
-            if(input == string.Empty)
+            //invalidate empty input
+            if (input.Equals(string.Empty))
             {
                 return float.NaN.ToString("F3");
             }
+            //end invalidate empty input
+
+            //add 0 and an operator if necessary
+            if (input[0] == '+' || input[0] == '-')
+            {
+                input = "0" + input;
+            }
+            else if (!('0' <= input[0] && input[0] <= '9'))
+            {
+                input = "0+" + input;
+            }
+            //end add 0 and an operator if necessary
 
             List<char> operators = new List<char>();
             List<float> numbers = new List<float>();
@@ -140,19 +149,55 @@ namespace Graff
                     {
                         if (input.Substring(bracketStart - 4, 4) == "asin")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.ASIN);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                mid = Math.Asin(tempFloat).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            //mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 4;
                             funcFound = true;
                         }
                         else if (input.Substring(bracketStart - 4, 4) == "acos")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.ACOS);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                mid = Math.Acos(tempFloat).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 4;
                             funcFound = true;
                         }
                         else if (input.Substring(bracketStart - 4, 4) == "atan")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.ATAN);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                mid = Math.Atan(tempFloat).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 4;
                             funcFound = true;
                         }
@@ -162,37 +207,130 @@ namespace Graff
                     {
                         if (input.Substring(bracketStart - 3, 3) == "sin")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.SIN);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                mid = Math.Sin(tempFloat * (Math.PI / 180)).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 3;
                             funcFound = true;
                         }
                         else if (input.Substring(bracketStart - 3, 3) == "cos")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.COS);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                mid = Math.Cos(tempFloat * (Math.PI / 180)).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 3;
                             funcFound = true;
                         }
                         else if (input.Substring(bracketStart - 3, 3) == "tan")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.TAN);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                if (tempFloat % 90 == 0)
+                                {
+                                    mid = float.NaN.ToString("F3");
+                                }
+                                else
+                                {
+                                    mid = Math.Tan(tempFloat * (Math.PI / 180)).ToString("F3");
+                                }
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 3;
                             funcFound = true;
                         }
                         else if (input.Substring(bracketStart - 3, 3) == "log")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.LOG);
+                            string[] parameters = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1).Split(',');
+                            float[] parametersF = new float[parameters.Length];
+
+                            for (int j = 0; j < parameters.Length; j++)
+                            {
+                                parameters[j] = Calculate(parameters[j]);
+
+                                if (float.TryParse(parameters[j], out float tempFloat))
+                                {
+                                    parametersF[j] = tempFloat;
+                                }
+                                else
+                                {
+                                    parametersF[j] = float.NaN;
+                                }
+                            }
+
+                            if (parametersF.Length == 2)
+                            {
+                                mid = Math.Log(parametersF[0], parametersF[1]).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 3;
                             funcFound = true;
                         }
                         else if (input.Substring(bracketStart - 3, 3) == "deg")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.DEG);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                mid = (tempFloat * (180 / Math.PI)).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 3;
                             funcFound = true;
                         }
                         else if (input.Substring(bracketStart - 3, 3) == "rad")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.RAD);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                mid = (tempFloat * (Math.PI / 180)).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 3;
                             funcFound = true;
                         }
@@ -202,7 +340,19 @@ namespace Graff
                     {
                         if (input.Substring(bracketStart - 2, 2) == "ln")
                         {
-                            mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1), Functions.LN);
+                            string parameter = input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1);
+                            parameter = Calculate(parameter);
+
+                            if (float.TryParse(parameter, out float tempFloat))
+                            {
+                                mid = Math.Log(tempFloat, Math.E).ToString("F3");
+                            }
+                            else
+                            {
+                                mid = float.NaN.ToString("F3");
+                            }
+
+                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 2;
                             funcFound = true;
                         }
@@ -220,13 +370,6 @@ namespace Graff
                 //end put everything inside pair of brackets found in 'Calculate' function
             }
             //end detect pair of brackets and calculate what is inside recursively
-
-            //consider a '0' before if first character is '+' or '-'
-            if (input[0] == '+' || input[0] == '-')
-            {
-                input = "0" + input;
-            }
-            //end consider a '0' before if first character is '+' or '-'
 
             //seperating operators from digits
             for (int i = 0; i < input.Length; i++)
@@ -256,15 +399,13 @@ namespace Graff
             {
                 if (!numStr.Equals(string.Empty))
                 {
-                    float tempFloat;
-
-                    if (float.TryParse(numStr, out tempFloat))
+                    if (float.TryParse(numStr, out float tempFloat))
                     {
                         numbers.Add(tempFloat);
                     }
                     else
                     {
-                        return float.NaN.ToString("F3");
+                        numbers.Add(float.NaN);
                     }
                 }
             }
@@ -406,61 +547,10 @@ namespace Graff
             }
             //end handling '+' or '-' operator
 
-            //check function by most outward pair of brackets
-            if (functionName == Functions.SIN)
-            {
-                return Math.Sin(numbers[0] * (Math.PI / 180f)).ToString("F3");
-            }
-            else if (functionName == Functions.COS)
-            {
-                return Math.Cos(numbers[0] * (Math.PI / 180f)).ToString("F3");
-            }
-            else if (functionName == Functions.TAN)
-            {
-                if (numbers[0] % 90 == 0)
-                {
-                    return float.NaN.ToString("F3");
-                }
-                else
-                {
-                    return Math.Tan(numbers[0] * (Math.PI / 180f)).ToString("F3");
-                }
-            }
-            else if (functionName == Functions.ASIN)
-            {
-                return (Math.Asin(numbers[0]) * (180f / Math.PI)).ToString("F3");
-            }
-            else if (functionName == Functions.ACOS)
-            {
-                return (Math.Acos(numbers[0]) * (180f / Math.PI)).ToString("F3");
-            }
-            else if (functionName == Functions.ATAN)
-            {
-                return (Math.Atan(numbers[0]) * (180f / Math.PI)).ToString("F3");
-            }
-            else if (functionName == Functions.LOG)
-            {
-                return Math.Log10(numbers[0]).ToString("F3");
-            }
-            else if (functionName == Functions.LN)
-            {
-                return Math.Log(numbers[0]).ToString("F3");
-            }
-            else if (functionName == Functions.DEG)
-            {
-                return (numbers[0] * (180.0 / Math.PI)).ToString("F3");
-            }
-            else if (functionName == Functions.RAD)
-            {
-                return (numbers[0] * (Math.PI / 180.0)).ToString("F3");
-            }
-            //end check function by most outward pair of brackets
-
             return numbers[0].ToString("F3");
             //return as it is if there is no function
             //clamping to show INFINITY and -INFINITY values as per my intention in some case(s) :3
         }
         //end main solving function
-
     }
 }

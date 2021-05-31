@@ -8,7 +8,7 @@ namespace Graff
 {
     static class Program
     {
-        public const string VERSION = "0.1";
+        public const string VERSION = "v1.0";
 
         /// <summary>
         /// The main entry point for the application.
@@ -18,7 +18,7 @@ namespace Graff
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new form_main());
+            Application.Run(new FormMain());
         }
     }
 }
