@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace Graff
 {
@@ -244,8 +243,6 @@ namespace Graff
 
                 string result = Calculations.Calculate(expression);
 
-                Console.WriteLine(expression + " = " + result);
-
                 if (float.TryParse(result, out float yVal))
                 {
                     pointf.Set(pointf.x, yVal);
@@ -264,7 +261,14 @@ namespace Graff
                 {
                     Point point0 = pointfs[i].ConvertToPoint();
                     Point point1 = pointfs[i + 1].ConvertToPoint();
-                    graphics.DrawLine(penBlack, point0, point1);
+
+                    if(0 <= point0.X && point0.X <= canvas.Width &&
+                        0 <= point0.Y && point0.Y <= canvas.Height &&
+                        0 <= point1.X && point1.X <= canvas.Width &&
+                        0 <= point1.Y && point1.Y <= canvas.Height)
+                    {
+                        graphics.DrawLine(penBlack, point0, point1);
+                    }
                 }
             }
         }
@@ -282,6 +286,7 @@ namespace Graff
         private void Click_button_clear(object sender, EventArgs e)
         {
             label_zoom_level.Text = (scale / INITIAL_SCALE_LEVEL).ToString("F2") + "x";
+            textBox_expression.Clear();
 
             ResetCanvas(canvas.CreateGraphics(), origin);
         }

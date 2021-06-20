@@ -161,7 +161,6 @@ namespace Graff
                                 mid = float.NaN.ToString("F3");
                             }
 
-                            //mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 4;
                             funcFound = true;
                         }
@@ -179,7 +178,6 @@ namespace Graff
                                 mid = float.NaN.ToString("F3");
                             }
 
-                            ///mid = Calculate(input.Substring(bracketStart + 1, bracketEnd - bracketStart - 1));
                             bracketStart -= 4;
                             funcFound = true;
                         }
@@ -287,7 +285,7 @@ namespace Graff
 
                             if (parametersF.Length == 2)
                             {
-                                mid = Math.Log(parametersF[0], parametersF[1]).ToString("F3");
+                                mid = Math.Log(parametersF[1], parametersF[0]).ToString("F3");
                             }
                             else
                             {
