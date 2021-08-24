@@ -2,7 +2,6 @@
  A simple graph sketching C# Windows Form application
 
  ![Graff Still](https://raw.githubusercontent.com/Siam11651/Graff/main/Screenshots/LatestRelease.PNG)
- ![Graff GIF](https://raw.githubusercontent.com/Siam11651/Graff/main/Screenshots/LatestRelease.gif)
 
  Check out "Releases" section for binary builds and source codes of complete versions.
 
